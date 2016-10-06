@@ -21,13 +21,6 @@ public class SmashObject : MonoBehaviour {
 //		} else {
 //			Debug.Log ("SmashObject cannot find game controller.");
 //		}
-		Debug.Log (isMagic);
-		if (isMagic) {
-			Debug.Log ("--> " + gameObject.name + " is magic!");
-			glowColor = Color.green;
-		} else {
-			Debug.Log ("--> " + gameObject.name + " is not magic...");
-		}
 	}
 
 	void OnMouseDown () {
@@ -75,6 +68,9 @@ public class SmashObject : MonoBehaviour {
 	{
 		Material material = gameObject.GetComponent<Renderer>().material;
 		float curIntensity = 0.0f;
+		if (isMagic) {
+			glowColor = Color.green;
+		}
 		material.EnableKeyword("_EMISSION");
 		material.globalIlluminationFlags = MaterialGlobalIlluminationFlags.RealtimeEmissive;
 		while (curIntensity < glowIntensity)
