@@ -23,13 +23,14 @@ public class GameBehavior : MonoBehaviour {
 			audioSource.clip = wrongSound;
 			audioSource.pitch = Random.Range (0.25f, 1.75f);;
 		}
-		int hidingSpot = Random.Range (0, hidingSpots.Length);
-		Debug.Log("spot is " + hidingSpots [hidingSpot].name);
-		AudioSource winner = hidingSpots [hidingSpot].GetComponent<AudioSource> ();
-		hidingSpots [hidingSpot].isMagic = true;
-		Debug.Log(hidingSpots [hidingSpot].name + " is magic? " + hidingSpots [hidingSpot].isMagic);
-		winner.clip = rightSound;
-		winner.pitch = 1.0f;
+		int winnerSpot = Random.Range (0, hidingSpots.Length);
+		// Set the winner
+		Debug.Log("winner is " + hidingSpots [winnerSpot].name);
+		SmashObject winner = hidingSpots [winnerSpot];
+		winner.isMagic = true;
+		AudioSource winnerAudio = winner.GetComponent<AudioSource> ();
+		winnerAudio.clip = rightSound;
+		winnerAudio.pitch = 1.0f;
 	}
 
 	void StartTimer () {
