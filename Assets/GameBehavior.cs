@@ -1,14 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class GameBehavior : MonoBehaviour {
-	public AudioClip wrongSound;
+	public AudioSource clockSound;
 	public AudioClip rightSound;
+	public AudioClip wrongSound;
+	public int levelTime = 30;
+	public Text remainingTime;
 
 	// Use this for initialization
 	void Start () 
 	{
 		HideKey ();
+		StartCoroutine (countdownTimer ());
 	}
 
 	// Update is called once per frame
@@ -33,8 +38,19 @@ public class GameBehavior : MonoBehaviour {
 		winnerAudio.pitch = 1.0f;
 	}
 
-	void StartTimer () {
-		
+	private IEnumerator countdownTimer () {
+		while (levelTime >= 0) {
+			if (levelTime < 10) {
+				remainingTime.color = Color.red;
+				remainingTime.text = "00:0" + levelTime;
+				clockSound.pitch -= 0.1f;
+			} else {
+				remainingTime.text = "00:" + levelTime;
+			}
+			clockSound.Play ();
+			yield return new WaitForSeconds (1);
+			levelTime--;
+		}
 	}
 		
 }
