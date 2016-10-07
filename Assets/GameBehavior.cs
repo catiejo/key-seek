@@ -1,17 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameBehavior : MonoBehaviour {
 	public AudioSource clockSound;
 	public AudioClip rightSound;
 	public AudioClip wrongSound;
 	public int levelTime = 30;
+	private static int _level = 0;
 	public Text remainingTime;
 
 	// Use this for initialization
 	void Start () 
 	{
+		levelTime -= 3 * _level;
 		HideKey ();
 		StartCoroutine (countdownTimer ());
 	}
@@ -44,6 +47,9 @@ public class GameBehavior : MonoBehaviour {
 				remainingTime.color = Color.red;
 				remainingTime.text = "00:0" + levelTime;
 				clockSound.pitch -= 0.1f;
+				if (levelTime == 0) {
+					SceneManager.LoadScene("lose");
+				}
 			} else {
 				remainingTime.text = "00:" + levelTime;
 			}
@@ -51,6 +57,10 @@ public class GameBehavior : MonoBehaviour {
 			yield return new WaitForSeconds (1);
 			levelTime--;
 		}
+	}
+
+	public void levelUp() {
+		_level++;
 	}
 		
 }
