@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class GameBehavior : MonoBehaviour {
 	public AudioSource clockSound;
+	public AudioSource bombSound;
 	public AudioClip rightSound;
 	public AudioClip wrongSound;
 	public int levelTime = 30;
@@ -48,6 +49,7 @@ public class GameBehavior : MonoBehaviour {
 				remainingTime.text = "00:0" + levelTime;
 				clockSound.pitch -= 0.1f;
 				if (levelTime == 0) {
+					bombSound.Play ();
 					SceneManager.LoadScene("lose");
 				}
 			} else {
@@ -61,6 +63,10 @@ public class GameBehavior : MonoBehaviour {
 
 	public void levelUp() {
 		_level++;
+	}
+
+	public void levelReset() {
+		_level = 0;
 	}
 		
 }
