@@ -68,7 +68,7 @@ public class SmashObject : MonoBehaviour {
 		material.globalIlluminationFlags = MaterialGlobalIlluminationFlags.EmissiveIsBlack;
 		material.SetColor("_EmissionColor", Color.black);
 		if (isMagic) {
-			yield return new WaitForSeconds (2);
+			yield return new WaitForSeconds (1.5f);
 			//FIXME: this would be better on the "next level" button on the win screen. 
 			//it works even when you click the winning object multiple times, but it still
 			//doesn't feel like the best place to level up.
