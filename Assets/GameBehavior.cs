@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class GameBehavior : MonoBehaviour {
+	public Camera camera;
 	public AudioSource clockSound;
 	public AudioSource bombSound;
 	public AudioClip rightSound;
@@ -11,17 +12,26 @@ public class GameBehavior : MonoBehaviour {
 	public int levelTime = 30;
 	private static int _level = 0;
 	public Text remainingTime;
+	private float _rotationAmount = 90f;
+	private float _rotationRemaining = 90f;
+	private Vector3 _rotationCenter = Vector3.zero;
+	private float _rotationResolution;
 
 	// Use this for initialization
 	void Start () 
 	{
-		levelTime -= 3 * _level;
+		_rotationResolution = _rotationAmount / 60f; //60 frames per second
+		levelTime -= 5 * _level;
 		HideKey ();
 		StartCoroutine (countdownTimer ());
 	}
 
 	// Update is called once per frame
 	void Update () {
+		if (_rotationRemaining > 0) {
+			camera.transform.RotateAround (_rotationCenter, Vector3.up, _rotationResolution);
+			_rotationRemaining -= _rotationResolution;
+		}
 	
 	}
 
@@ -67,6 +77,10 @@ public class GameBehavior : MonoBehaviour {
 
 	public void levelReset() {
 		_level = 0;
+	}
+
+	public void rotateView() {
+		_rotationRemaining += _rotationAmount;
 	}
 		
 }
