@@ -5,3 +5,4 @@ AssetTests
 *.userprefs
 *.csproj
 *.sln
+*.DS_Store
