@@ -40,6 +40,7 @@ public class SmashObject : MonoBehaviour {
 		Material material = gameObject.GetComponent<Renderer>().material;
 		float curIntensity = 0.0f;
 		if (isMagic) {
+			_controller.winGame ();
 			glowColor = Color.green;
 		}
 		material.EnableKeyword("_EMISSION");
@@ -53,7 +54,8 @@ public class SmashObject : MonoBehaviour {
 //			Debug.Log ("current intensity is: " + curIntensity);
 		}
 		if (isMagic) {
-			GameObject bomb = Instantiate (Resources.Load ("bomb"), transform.position, Quaternion.identity) as GameObject;
+//			GameObject bomb = Instantiate (Resources.Load ("bomb"), transform.position, Quaternion.identity) as GameObject;
+			GameObject key = Instantiate (Resources.Load ("key"), transform.position, Quaternion.identity) as GameObject;
 		}
 		// Peak reached. Now decrease intensity (fade out)
 		while (curIntensity > 0)
@@ -67,13 +69,5 @@ public class SmashObject : MonoBehaviour {
 		material.DisableKeyword("_EMISSION");
 		material.globalIlluminationFlags = MaterialGlobalIlluminationFlags.EmissiveIsBlack;
 		material.SetColor("_EmissionColor", Color.black);
-		if (isMagic) {
-			yield return new WaitForSeconds (1.5f);
-			//FIXME: this would be better on the "next level" button on the win screen. 
-			//it works even when you click the winning object multiple times, but it still
-			//doesn't feel like the best place to level up.
-			_controller.levelUp();
-			SceneManager.LoadScene("win");
-		}
 	}
 }
