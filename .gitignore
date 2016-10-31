@@ -6,3 +6,4 @@ AssetTests
 *.csproj
 *.sln
 *.DS_Store
+key-seek/*

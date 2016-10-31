@@ -17,7 +17,7 @@ public class Key : MonoBehaviour {
 
 	public void loadNextLevel() {
 		_controller.levelUp ();
-		Invoke("_loadWinScene", 3f); // Invoke can't be passed with arguments, so I made a wrapper function loadWinScene
+		Invoke("_loadWinScene", 2f); // Invoke can't be passed with arguments, so I made a wrapper function loadWinScene
 	}
 
 	private void _loadWinScene() {

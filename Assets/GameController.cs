@@ -67,7 +67,7 @@ public class GameController : MonoBehaviour {
 	public void winGame() {
 		Debug.Log ("Key found!");
 		StopCoroutine (_gameTimer);
-		remainingTimeText.color = Color.green;
+		remainingTimeText.color = new Color(0.67f, 0.89f, 0.73f); // green
 		// Rotate back to original view
 		float rotationsRemaining = _currentRotation / 360f;
 		if (rotationsRemaining > 0.25f) {
@@ -81,7 +81,7 @@ public class GameController : MonoBehaviour {
 	private IEnumerator gameTimer () {
 		while (remainingTime >= 0) {
 			if (remainingTime < 10) {
-				remainingTimeText.color = Color.red;
+				remainingTimeText.color = new Color(0.82f, 0.49f, 0.52f); // red
 				clockSound.pitch -= 0.1f;
 				remainingTimeText.text = "00:0" + remainingTime;
 				if (remainingTime == 0) {
