@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class GameBehavior : MonoBehaviour {
+public class GameController : MonoBehaviour {
 	public Camera camera;
 	public AudioSource clockSound;
 	public AudioClip keyFoundSound;
@@ -36,8 +36,8 @@ public class GameBehavior : MonoBehaviour {
 	}
 
 	void HideKey () {
-		SmashObject[] hidingSpots = FindObjectsOfType(typeof(SmashObject)) as SmashObject[];
-		foreach (SmashObject spot in hidingSpots) {
+		HidingSpot[] hidingSpots = FindObjectsOfType(typeof(HidingSpot)) as HidingSpot[];
+		foreach (HidingSpot spot in hidingSpots) {
 			AudioSource audioSource = spot.GetComponent<AudioSource>();
 			audioSource.clip = keyNotFoundSound;
 			audioSource.pitch = Random.Range (0.25f, 1.75f);;
@@ -45,7 +45,7 @@ public class GameBehavior : MonoBehaviour {
 		int winnerSpot = Random.Range (0, hidingSpots.Length);
 		// Set the winner
 		Debug.Log("winner is " + hidingSpots [winnerSpot].name);
-		SmashObject winner = hidingSpots [winnerSpot];
+		HidingSpot winner = hidingSpots [winnerSpot];
 		winner.hidingSpotHasKey = true;
 		AudioSource winnerAudio = winner.GetComponent<AudioSource> ();
 		winnerAudio.clip = keyFoundSound;

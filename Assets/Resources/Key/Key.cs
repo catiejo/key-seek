@@ -2,14 +2,14 @@
 using System.Collections;
 using UnityEngine.SceneManagement;
 
-public class KeyBehavior : MonoBehaviour {
-	private GameBehavior _controller;
+public class Key : MonoBehaviour {
+	private GameController _controller;
 
 	void Start () {
 		//Find the game controller object in the scene
 		GameObject controllerObject = GameObject.FindWithTag ("GameController");
 		if (controllerObject != null) {
-			_controller = controllerObject.GetComponent<GameBehavior> ();
+			_controller = controllerObject.GetComponent<GameController> ();
 		} else {
 			Debug.Log ("Key cannot find game controller.");
 		}	

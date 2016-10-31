@@ -2,22 +2,23 @@
 using System.Collections;
 using UnityEngine.SceneManagement;
 
-public class SmashObject : MonoBehaviour {
+public class HidingSpot : MonoBehaviour {
 	public AudioSource soundEffect;
 	public bool hidingSpotHasKey;
 
-	private GameBehavior _controller;
+	private GameController _controller;
 
-	void Start () 
+	void Start ()
 	{
-		//Find the game controller object in the scene
+		// Find the game controller object in the scene
 		GameObject controllerObject = GameObject.FindWithTag ("GameController");
 		if (controllerObject != null) {
-			_controller = controllerObject.GetComponent<GameBehavior> ();
-			soundEffect = gameObject.GetComponent<AudioSource>();
+			_controller = controllerObject.GetComponent<GameController> ();
 		} else {
 			Debug.Log ("This HidingSpot cannot find the game controller.");
 		}
+		// Get the HidingSpot's audio source
+		soundEffect = gameObject.GetComponent<AudioSource>();
 	}
 
 	void OnMouseDown () {
