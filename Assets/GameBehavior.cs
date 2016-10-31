@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 public class GameBehavior : MonoBehaviour {
 	public Camera camera;
 	public AudioSource clockSound;
-	public AudioSource bombSound;
 	public AudioClip rightSound;
 	public AudioClip wrongSound;
 	public int levelTime = 30;
@@ -16,25 +15,24 @@ public class GameBehavior : MonoBehaviour {
 	private static int _level = 0;
 	private Vector3 _rotationCenter = Vector3.zero;
 	private float _currentRotation = 0;
-	private float _rotationAmount = 90f;
 	private float _rotationRemaining = 0;
-	private float _rotationResolution;
+	private float _rotationResolution = 2.0f; // Degrees per frame
 	private bool _gameWon = false;
 	private IEnumerator _gameTimer;
 
 	void Start () 
 	{
-		_rotationResolution = _rotationAmount / 60f; // Divide by frame rate (so rotation takes 1 second)
 		levelTime -= levelIncrement * _level;
 		HideKey ();
-		_gameTimer = countdownTimer ();
+		_gameTimer = gameTimer ();
 		StartCoroutine (_gameTimer);
 	}
 
 	void Update () {
-		if (_rotationRemaining > 0) {
-			camera.transform.RotateAround (_rotationCenter, Vector3.up, _rotationResolution);
-			_rotationRemaining -= _rotationResolution;
+		if (Mathf.Abs(_rotationRemaining) > Mathf.Epsilon) {
+			float rotationAmount = Mathf.Sign (_rotationRemaining) * _rotationResolution; // direction * amount
+			camera.transform.RotateAround (_rotationCenter, Vector3.up, rotationAmount);
+			_rotationRemaining -= rotationAmount;
 		}
 	
 	}
@@ -56,14 +54,13 @@ public class GameBehavior : MonoBehaviour {
 		winnerAudio.pitch = 1.0f;
 	}
 
-	private IEnumerator countdownTimer () {
-		while (levelTime >= 0 && !_gameWon) {
+	private IEnumerator gameTimer () {
+		while (levelTime >= 0) {
 			if (levelTime < 10) {
 				remainingTime.color = Color.red;
-				remainingTime.text = "00:0" + levelTime;
 				clockSound.pitch -= 0.1f;
+				remainingTime.text = "00:0" + levelTime;
 				if (levelTime == 0) {
-					bombSound.Play ();
 					SceneManager.LoadScene("lose");
 				}
 			} else {
@@ -83,28 +80,24 @@ public class GameBehavior : MonoBehaviour {
 		_level = 0;
 	}
 
-	public void rotateView() {
-		_rotationRemaining += _rotationAmount;
-		_currentRotation = (_currentRotation + _rotationAmount) % 360.0f;
+	public void rotateView(float rotation) {
+//		float direction = Mathf.Sign (rotation);
+		float degrees = rotation * 360f;
+		_rotationRemaining += degrees;
+		_currentRotation = (_currentRotation + degrees + 360f) % 360.0f;
 		Debug.Log ("Camera is now rotated " + _currentRotation + " degrees.");
 	}
 
 	public void winGame() {
-		Debug.Log ("game is won!");
+		Debug.Log ("Key found!");
 		StopCoroutine (_gameTimer);
 		remainingTime.color = Color.green;
-		int rotationsRemaining = (4 - (int) (_currentRotation / _rotationAmount)) % 4;
-		while (rotationsRemaining != 0) {
-			rotateView ();
-			rotationsRemaining--;
+		float rotationsRemaining = _currentRotation / 360f;
+		if (rotationsRemaining > 0.25f) {
+			rotateView (1f - rotationsRemaining);
+		} else {
+			rotateView (-1f * rotationsRemaining);
 		}
-		GameObject door = GameObject.FindWithTag ("Door");
-		door.GetComponent<Animation>().Play ();
-//		Invoke("loadWin", 3f);
-	}
-		
-	private void loadWin() {
-		levelUp ();
-		SceneManager.LoadScene ("win");
+		// Win scene is loaded from KeyBehavior.cs (via animation event)
 	}
 }
