@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 public class KeyBehavior : MonoBehaviour {
 	private GameBehavior _controller;
 
-	// Use this for initialization
 	void Start () {
 		//Find the game controller object in the scene
 		GameObject controllerObject = GameObject.FindWithTag ("GameController");
@@ -15,19 +14,13 @@ public class KeyBehavior : MonoBehaviour {
 			Debug.Log ("Key cannot find game controller.");
 		}	
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
 
 	public void loadNextLevel() {
 		_controller.levelUp ();
-		Invoke("loadWinScene", 3f);
-
+		Invoke("_loadWinScene", 3f); // Invoke can't be passed with arguments, so I made a wrapper function loadWinScene
 	}
 
-	private void loadWinScene() {
+	private void _loadWinScene() {
 		SceneManager.LoadScene ("win");
 	}
 
